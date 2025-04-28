@@ -20,9 +20,9 @@ func main() {
 	}
 	app := fiber.New()
 	Entities.Init(db)
-	fmt.Println(config.Jwt_secret)
 
 	routers.InitUserRoute(app, db)
+	routers.InitTweetRoute(app, db)
 
-	app.Listen(":8000")
+	app.Listen(fmt.Sprintf(":%s", config.Port))
 }

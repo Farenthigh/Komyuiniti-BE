@@ -3,29 +3,29 @@ version: '3.1'
 services:
   server:
     restart: on-failure
-    container_name: fitbuddy-be
+    container_name: komyuniti-be
     build:
       context: .
       dockerfile: Dockerfile
     environment:
       PORT: ${PORT}
-      DB_HOST: fitbuddy-db
+      DB_HOST: komyuniti-db
       DB_PORT: 5432
       DB_USER: ${DB_USER}
       DB_PASSWORD:  ${DB_PASSWORD}
-      DB_SCHEMA: fitbuddy
+      DB_SCHEMA: komyuniti
     ports:
       - "${PORT}:${PORT}"
 
   postgres:
     image: postgres:alpine
-    container_name: fitbuddy-db
+    container_name: komyuniti-db
     ports:
       - "5432:5432"
     environment:
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
-      POSTGRES_DB: fitbuddy
+      POSTGRES_DB: komyuniti
     volumes:
       - psql_volume_bp:/var/lib/postgresql/data
 volumes:

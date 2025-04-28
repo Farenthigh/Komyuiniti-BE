@@ -45,7 +45,7 @@ func (service *UserService) Register(user *UserModels.RegisterInput) (string, er
 	if err := service.userRepo.Register(&userEntity); err != nil {
 		return "Internal server error", err
 	}
-	return "User created", errors.New("")
+	return "User created", nil
 }
 
 func (service *UserService) GetAll() ([]Entities.User, error) {
