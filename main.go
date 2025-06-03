@@ -23,6 +23,8 @@ func main() {
 
 	routers.InitUserRoute(app, db)
 	routers.InitTweetRoute(app, db)
+	routers.InitEventRoute(app, db)
+	routers.InitAnimeRoute(app, db)
 
 	app.Listen(fmt.Sprintf(":%s", config.Port))
 }
