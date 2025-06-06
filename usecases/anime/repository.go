@@ -8,5 +8,4 @@ type AnimeRepositorty interface {
 	Create(anime *Entities.Anime) error
 	Update(anime *Entities.Anime) error
 	DeleteByID(id *uint) error
-	GetByUserID(userID *uint) ([]Entities.Anime, error)
 }

@@ -20,7 +20,10 @@ func InitUserRoute(app *fiber.App, db *gorm.DB) {
 
 	protected := user.Group("/")
 	protected.Use(utils.IsExist)
-
 	protected.Get("/me", userHandler.Me)
+	protected.Put("/me", userHandler.Update)
+	protected.Get("/tweets", userHandler.GetMyTweets)
+	protected.Get("/events", userHandler.GetMyEvents)
+
 	protected.Get("/logout", userHandler.Logout)
 }

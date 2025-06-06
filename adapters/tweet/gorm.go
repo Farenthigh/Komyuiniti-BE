@@ -23,7 +23,7 @@ func (g *TweetGorm) GetAll() ([]Entities.Tweet, error) {
 }
 func (g *TweetGorm) GetByID(id *uint) (*Entities.Tweet, error) {
 	var forum Entities.Tweet
-	if err := g.db.Preload("Author").Where("id = ?", id).First(&forum).Error; err != nil {
+	if err := g.db.Preload("Author").Preload("Comments").Preload("Comments.Author").Where("id = ?", id).First(&forum).Error; err != nil {
 		return nil, err
 	}
 	return &forum, nil

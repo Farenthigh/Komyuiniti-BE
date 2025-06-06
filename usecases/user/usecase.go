@@ -2,6 +2,7 @@ package UserUsecase
 
 import (
 	"errors"
+	"fmt"
 
 	Entities "github.com/Farenthigh/Fitbuddy-BE/entities"
 	UserModels "github.com/Farenthigh/Fitbuddy-BE/model/user"
@@ -14,6 +15,9 @@ type UserUsecase interface {
 	GetAll() ([]Entities.User, error)
 	Login(*UserModels.LoginInput) (string, error)
 	Me(userID *uint) (*Entities.User, error)
+	Update(userID *uint, user *Entities.User) (*Entities.User, error)
+	GetMyTweets(userID *uint) ([]Entities.Tweet, error)
+	GetMyEvents(userID *uint) ([]Entities.Event, error)
 }
 
 type UserService struct {
@@ -86,4 +90,34 @@ func (service *UserService) Me(userID *uint) (*Entities.User, error) {
 		return nil, errors.New("user not found")
 	}
 	return user, nil
+}
+func (service *UserService) Update(userID *uint, user *Entities.User) (*Entities.User, error) {
+	fmt.Println(user.UserName)
+	userEntity, err := service.userRepo.GetByID(userID)
+	if err != nil {
+		return nil, errors.New("user not found")
+	}
+	if userEntity == nil {
+		return nil, errors.New("user not found")
+	}
+	userEntity.UserName = user.UserName
+	userEntity.Email = user.Email
+	userEntity.UserImage = user.UserImage
+	return service.userRepo.Update(userID, userEntity)
+}
+
+func (service *UserService) GetMyTweets(userID *uint) ([]Entities.Tweet, error) {
+	tweets, err := service.userRepo.GetMyTweets(userID)
+	if err != nil {
+		return nil, errors.New("failed to get tweets")
+	}
+	return tweets, nil
+}
+
+func (service *UserService) GetMyEvents(userID *uint) ([]Entities.Event, error) {
+	events, err := service.userRepo.GetMyEvents(userID)
+	if err != nil {
+		return nil, errors.New("failed to get events")
+	}
+	return events, nil
 }

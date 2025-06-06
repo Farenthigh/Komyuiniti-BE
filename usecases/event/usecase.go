@@ -9,6 +9,7 @@ type EventUsecase interface {
 	Update(event *Entities.Event) error
 	DeleteByID(id *uint) error
 	GetByUserID(userID *uint) ([]Entities.Event, error)
+	JoinEvent(eventID *uint, UserID *uint) error
 }
 
 type EventService struct {
@@ -71,4 +72,10 @@ func (service *EventService) GetByUserID(userID *uint) ([]Entities.Event, error)
 		return nil, err
 	}
 	return events, nil
+}
+func (service *EventService) JoinEvent(eventID *uint, UserID *uint) error {
+	if err := service.eventRepo.JoinEvent(eventID, UserID); err != nil {
+		return err
+	}
+	return nil
 }

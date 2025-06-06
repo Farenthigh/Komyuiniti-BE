@@ -1,6 +1,8 @@
 package eventAdapter
 
 import (
+	"fmt"
+
 	Entities "github.com/Farenthigh/Fitbuddy-BE/entities"
 	"gorm.io/gorm"
 )
@@ -23,7 +25,7 @@ func (g *EventGorm) GetAll() ([]Entities.Event, error) {
 }
 func (g *EventGorm) GetByID(id *uint) (*Entities.Event, error) {
 	var event Entities.Event
-	if err := g.db.Preload("Author").Where("id = ?", id).First(&event).Error; err != nil {
+	if err := g.db.Preload("Members").Preload("Author").Where("id = ?", id).First(&event).Error; err != nil {
 		return nil, err
 	}
 	return &event, nil
@@ -52,4 +54,21 @@ func (g *EventGorm) GetByUserID(userID *uint) ([]Entities.Event, error) {
 		return nil, err
 	}
 	return events, nil
+}
+func (g *EventGorm) JoinEvent(eventID *uint, userID *uint) error {
+	var event Entities.Event
+	if err := g.db.Preload("Members").Where("id = ?", eventID).First(&event).Error; err != nil {
+		return err
+	}
+
+	var user Entities.User
+	if err := g.db.Where("id = ?", userID).First(&user).Error; err != nil {
+		return err
+	}
+	fmt.Println(&user)
+	event.Members = append(event.Members, user)
+	if err := g.db.Save(&event).Error; err != nil {
+		return err
+	}
+	return nil
 }

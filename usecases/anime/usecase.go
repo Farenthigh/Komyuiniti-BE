@@ -8,7 +8,6 @@ type AnimeUsecase interface {
 	Create(anime *Entities.Anime) error
 	Update(anime *Entities.Anime) error
 	DeleteByID(id *uint) error
-	GetByUserID(userID *uint) ([]Entities.Anime, error)
 }
 type AnimeService struct {
 	animeRepo AnimeRepositorty
@@ -60,11 +59,5 @@ func (service *AnimeService) DeleteByID(id *uint) error {
 		return err
 	}
 	return nil
-}
-func (service *AnimeService) GetByUserID(userID *uint) ([]Entities.Anime, error) {
-	animes, err := service.animeRepo.GetByUserID(userID)
-	if err != nil {
-		return nil, err
-	}
-	return animes, nil
+
 }

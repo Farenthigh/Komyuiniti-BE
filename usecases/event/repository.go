@@ -9,4 +9,5 @@ type Eventrepository interface {
 	Update(event *Entities.Event) error
 	DeleteByID(id *uint) error
 	GetByUserID(userID *uint) ([]Entities.Event, error)
+	JoinEvent(eventID *uint, UserID *uint) error
 }

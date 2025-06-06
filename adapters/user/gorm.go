@@ -67,3 +67,28 @@ func (g *UserGorm) GetByID(id *uint) (*Entities.User, error) {
 	}
 	return &user, nil
 }
+func (g *UserGorm) Update(id *uint, user *Entities.User) (*Entities.User, error) {
+	if err := g.db.Model(&user).Where("id = ?", id).Updates(user).Error; err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, fmt.Errorf("user with id %d not found", id)
+		}
+		return nil, err
+	}
+	return user, nil
+}
+
+func (g *UserGorm) GetMyTweets(userID *uint) ([]Entities.Tweet, error) {
+	var tweets []Entities.Tweet
+	if err := g.db.Where("author_id = ?", userID).Preload("Author").Find(&tweets).Error; err != nil {
+		return nil, err
+	}
+	return tweets, nil
+}
+
+func (g *UserGorm) GetMyEvents(userID *uint) ([]Entities.Event, error) {
+	var events []Entities.Event
+	if err := g.db.Where("author_id = ?", userID).Preload("Author").Find(&events).Error; err != nil {
+		return nil, err
+	}
+	return events, nil
+}

@@ -18,5 +18,4 @@ func InitAnimeRoute(app *fiber.App, db *gorm.DB) {
 	anime.Post("/", animeHandler.Create)
 	anime.Put("/:id", animeHandler.Update)
 	anime.Delete("/:id", animeHandler.DeleteByID)
-	anime.Get("/user/:userID", animeHandler.GetByUserID)
 }

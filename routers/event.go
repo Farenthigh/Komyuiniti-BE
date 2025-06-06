@@ -3,6 +3,7 @@ package routers
 import (
 	eventAdapter "github.com/Farenthigh/Fitbuddy-BE/adapters/event"
 	EventUsecase "github.com/Farenthigh/Fitbuddy-BE/usecases/event"
+	"github.com/Farenthigh/Fitbuddy-BE/utils"
 	"github.com/gofiber/fiber/v2"
 	"gorm.io/gorm"
 )
@@ -19,4 +20,8 @@ func InitEventRoute(app *fiber.App, db *gorm.DB) {
 	event.Put("/:id", eventHandler.Update)
 	event.Delete("/:id", eventHandler.DeleteByID)
 	event.Get("/user/:userID", eventHandler.GetByUserID)
+
+	protected := event.Group("/")
+	protected.Use(utils.IsExist)
+	protected.Post("/:id/join", eventHandler.JoinEvent)
 }
